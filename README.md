@@ -20,8 +20,8 @@ lib/
 ## 🛠️ Setup & Installation
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/fkirewold/firebase-notification-app.git
+   cd firebase-firebase-notification
    ```
  3. **Install dependencies**
  ```bash
