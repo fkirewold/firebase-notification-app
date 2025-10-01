@@ -10,7 +10,7 @@ The project is created for learning purposes and serves as a starting point for 
 - 🎯 Handle notification click/tap actions  
 - 🔔 Support for both Android and iOS  
 
----
+-----
 
 ## 📂 Project Structure
 lib/
