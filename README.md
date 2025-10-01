@@ -28,15 +28,10 @@ lib/
  flutter pub get
  ```
  4. **Setup Firebase**
-
-Create a Firebase project in Firebase Console
-.
-Add an Android app and/or iOS app.
-
-Download google-services.json (Android) and place it inside android/app/.
-
-Download GoogleService-Info.plist (iOS) and place it inside ios/Runner/.
-
+- Create a Firebase project in Firebase Console.
+- Add an Android app and/or iOS app.
+- Download google-services.json (Android) and place it inside android/app/.
+- Download GoogleService-Info.plist (iOS) and place it inside ios/Runner/.
 Run:
 ```bash
 flutterfire configure
