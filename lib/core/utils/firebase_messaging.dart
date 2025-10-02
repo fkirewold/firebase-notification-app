@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_notification_app/core/utils/local_notification_service.dart';
 
 class FirebaseMsg {
  static Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -31,24 +31,23 @@ void initFirebaseMessaging(context)  async{
     print("Firebase Messaging Token: $token");
   });
 
-FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  await _messaging.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  await LocalNotificationService().init();
+
+FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
   if (message.notification != null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("${message.notification!.title}: ${message.notification!.body}"),
-      ),
-    );
+    await LocalNotificationService().showNotification(message);
   }
 });
 
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async{
      if (message.notification != null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("${message.notification!.title}: ${message.notification!.body}"),
-      ),
-    );
+    await LocalNotificationService().showNotification(message);
   }
 });
 
