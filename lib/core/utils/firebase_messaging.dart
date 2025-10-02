@@ -25,8 +25,10 @@ void requestPermission() async {
 }
 void initFirebaseMessaging(context)  async{
   requestPermission();
-  await  _messaging.subscribeToTopic("allUsers").then((_) {
+  await  _messaging.subscribeToTopic("allUsers").then((_) async{
     print("Subscribed to allUsers topic");
+    String? token= await _messaging.getToken();
+    print("Firebase Messaging Token: $token");
   });
 
 FirebaseMessaging.onMessage.listen((RemoteMessage message) {
