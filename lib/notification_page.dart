@@ -25,6 +25,7 @@ class _NotificationPageState extends State<NotificationPage> {
       appBar: AppBar(
         title: Text("Firebase Push Notification"),
         centerTitle: true,
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Text("Firebase Push Notification App"),
