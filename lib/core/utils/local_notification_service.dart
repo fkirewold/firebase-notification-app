@@ -83,6 +83,26 @@ class LocalNotificationService {
   );
 
  }
+static  Future<void> scheduledNotificationAfter3seconds(
+    int id, String title, String body) async {
 
+
+  await FlutterLocalNotificationsPlugin().zonedSchedule(
+    id,
+    title,
+    body,
+    androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3)),
+    const NotificationDetails(
+      android: AndroidNotificationDetails(
+        'reminder_notifications',
+        'Reminder Notifications after 3 seconds',
+        channelDescription: 'Notifications that are scheduled to appear later',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    ),
+  );
+ }
 
 }
