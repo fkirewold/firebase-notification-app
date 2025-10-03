@@ -1,5 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 class LocalNotificationService {
 
@@ -60,6 +62,28 @@ class LocalNotificationService {
  }
  static Future<List<PendingNotificationRequest>> getPendingNotifications() async {
   return await FlutterLocalNotificationsPlugin().pendingNotificationRequests();
+ }
+ static Future<void> scheduleNotification(
+    int id, String title, String body, DateTime scheduledDate) async {
+  tz.initializeTimeZones();
+  await FlutterLocalNotificationsPlugin().zonedSchedule(
+    id,
+    title,
+    body,
+    androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    tz.TZDateTime.from(scheduledDate, tz.local),
+    const NotificationDetails(
+      android: AndroidNotificationDetails(
+        'reminder_notifications',
+        'Reminder Notifications',
+        channelDescription: 'Notifications that are scheduled to appear later',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    ),
+    matchDateTimeComponents: DateTimeComponents.time, // For daily at time
+  );
+
  }
 
 
