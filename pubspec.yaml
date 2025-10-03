@@ -38,11 +38,15 @@ dependencies:
   firebase_messaging: ^16.0.2
   flutter_local_notifications: ^19.4.2
   timezone: ^0.10.1
-  flutter_native_timezone: ^2.0.0
-
+  flutter_timezone:
+    git:
+      url: https://github.com/fkirewold/flutter_native_timezone.git
+      branch: main
 dev_dependencies:
   flutter_test:
     sdk: flutter
+dependency_overrides:
+  meta: ^1.16.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
