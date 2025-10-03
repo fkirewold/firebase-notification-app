@@ -49,8 +49,18 @@ class LocalNotificationService {
     platformChannelSpecifics,
     payload: 'item x',
   );
-
-
  }
+
+ static Future<void> cancelAllNotifications() async {
+  await FlutterLocalNotificationsPlugin().cancelAll();
+ }
+
+ static Future<void> cancelNotification(int id) async {
+  await FlutterLocalNotificationsPlugin().cancel(id);
+ }
+ static Future<List<PendingNotificationRequest>> getPendingNotifications() async {
+  return await FlutterLocalNotificationsPlugin().pendingNotificationRequests();
+ }
+
 
 }
