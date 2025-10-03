@@ -31,11 +31,6 @@ void initFirebaseMessaging(context)  async{
     print("Firebase Messaging Token: $token");
   });
 
-  await _messaging.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
   await LocalNotificationService().init();
 
 FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
