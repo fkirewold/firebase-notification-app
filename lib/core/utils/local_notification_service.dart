@@ -3,9 +3,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 class LocalNotificationService {
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+ static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-      bool initialized = false;
+    static  bool initialized = false;
 
   static final LocalNotificationService _instance = LocalNotificationService._internal();
   factory LocalNotificationService() {
@@ -13,7 +13,7 @@ class LocalNotificationService {
   }
   LocalNotificationService._internal();
   
- Future<void> init() async {
+static Future<void> init() async {
   if(initialized)
   {
     return;
@@ -64,7 +64,7 @@ class LocalNotificationService {
  static Future<void> scheduleNotification(
     int id, String title, String body, DateTime scheduledDate) async {
 
-  await FlutterLocalNotificationsPlugin().zonedSchedule(
+  await flutterLocalNotificationsPlugin.zonedSchedule(
     id,
     title,
     body,
@@ -87,7 +87,7 @@ static  Future<void> scheduledNotificationAfter3seconds(
     int id, String title, String body) async {
 
 
-  await FlutterLocalNotificationsPlugin().zonedSchedule(
+  await flutterLocalNotificationsPlugin.zonedSchedule(
     id,
     title,
     body,
@@ -96,7 +96,7 @@ static  Future<void> scheduledNotificationAfter3seconds(
     const NotificationDetails(
       android: AndroidNotificationDetails(
         'reminder_notifications',
-        'Reminder Notifications after 3 seconds',
+        'Reminder Notifications after ',
         channelDescription: 'Notifications that are scheduled to appear later',
         importance: Importance.max,
         priority: Priority.high,
