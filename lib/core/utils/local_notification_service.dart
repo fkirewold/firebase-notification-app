@@ -1,8 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest_all.dart' as tz;
-
 class LocalNotificationService {
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -65,7 +63,7 @@ class LocalNotificationService {
  }
  static Future<void> scheduleNotification(
     int id, String title, String body, DateTime scheduledDate) async {
-  tz.initializeTimeZones();
+
   await FlutterLocalNotificationsPlugin().zonedSchedule(
     id,
     title,
