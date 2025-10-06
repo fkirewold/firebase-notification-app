@@ -1,4 +1,4 @@
-import 'package:firebase_notification_app/core/utils/firebase_messaging.dart';
+//import 'package:firebase_notification_app/core/utils/firebase_messaging.dart';
 import 'package:firebase_notification_app/core/utils/local_notification_service.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class _NotificationPageState extends State<NotificationPage> {
 @override
   void initState() {
     super.initState();
-    FirebaseMsg().initFirebaseMessaging(context);
+   // FirebaseMsg().initFirebaseMessaging(context);
   }
 @override
   void dispose() {

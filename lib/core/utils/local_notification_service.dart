@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
+
 class LocalNotificationService {
 
  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -30,7 +31,6 @@ static Future<void> init() async {
  }
 
  Future<void> showNotification(RemoteMessage message) async{
-  await init();
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails(
     'call_notifications',
@@ -84,14 +84,26 @@ static Future<void> init() async {
  }
 static  Future<void> scheduledNotificationAfter3seconds(
     int id, String title, String body) async {
+      
+     final androidImplementation =
+        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
 
-
+    // Ask for notification permission (Android 13+)
+ 
+ bool? permissionRequest= await androidImplementation?.requestNotificationsPermission();
+ print("Permission: $permissionRequest");
+ if(permissionRequest==false)
+ {  
+    return;
+  }
+    
   await flutterLocalNotificationsPlugin.zonedSchedule(
     id,
     title,
     body,
     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-    tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3)),
+    tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
     const NotificationDetails(
       android: AndroidNotificationDetails(
         'reminder_notifications',
