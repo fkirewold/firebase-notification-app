@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
 import 'package:firebase_notification_app/core/utils/local_notification_service.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 void main() async
 {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,9 @@ void main() async
   tz.initializeTimeZones();
    // 2. Get the device's local timezone
   // 3. Set the local timezone for timezone package
-   tz.setLocalLocation(tz.getLocation('Africa/Addis_Ababa'));
+  final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
+   tz.setLocalLocation(tz.getLocation(currentTimeZone.identifier));
+  // Initialize local notification service
     await LocalNotificationService.init();
 
   runApp(FirebasePushNotificationApp());

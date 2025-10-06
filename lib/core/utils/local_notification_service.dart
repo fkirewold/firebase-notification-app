@@ -27,6 +27,17 @@ static Future<void> init() async {
   );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  final androidImplementation =
+        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    await androidImplementation?.createNotificationChannel(
+      const AndroidNotificationChannel(
+        'reminder_notifications', // Same ID as in AndroidNotificationDetails
+        'Reminder Notifications',
+        description: 'Notifications that are scheduled to appear later',
+        importance: Importance.max,
+      ),
+    );
   initialized = true;
  }
 
@@ -115,5 +126,7 @@ static  Future<void> scheduledNotificationAfter3seconds(
     ),
   );
  }
+
+
 
 }
