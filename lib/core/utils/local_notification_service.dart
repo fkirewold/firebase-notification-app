@@ -27,7 +27,6 @@ static Future<void> init() async {
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   initialized = true;
-
  }
 
  Future<void> showNotification(RemoteMessage message) async{
