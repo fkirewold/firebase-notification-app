@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotificationService {
@@ -127,6 +128,22 @@ static  Future<void> scheduledNotificationAfter3seconds(
   );
  }
 
+static Future<bool> requestNotificationPermission() async {
+    // Check notification permission status
+    PermissionStatus status = await Permission.notification.status;
 
+    if (status.isDenied) {
+      // Request permission
+      status = await Permission.notification.request();
+    }
+
+    if (status.isPermanentlyDenied) {
+      // Optionally prompt user to enable manually
+      await openAppSettings();
+      return false;
+    }
+
+    return status.isGranted;
+  }
 
 }
