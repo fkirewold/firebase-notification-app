@@ -22,6 +22,7 @@ void main() async
   // 3. Set the local timezone for timezone package
   final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
    tz.setLocalLocation(tz.getLocation(currentTimeZone.identifier));
+   print("Local Timezone: ${currentTimeZone.identifier}");
   // Initialize local notification service
     await LocalNotificationService.init();
 
