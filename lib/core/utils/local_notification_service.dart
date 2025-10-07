@@ -37,7 +37,24 @@ class LocalNotificationService {
         importance: Importance.max,
       ),
     );
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,onDidReceiveNotificationResponse: (NotificationResponse response) {
+        print("Foreground notification received: ${response.payload}");
+        // Optionally show the notification in the system tray
+        flutterLocalNotificationsPlugin.show(
+          response.id ?? 0,
+          'Scheduled Notification',
+          'This notification was triggered while the app is in the foreground',
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'reminder_notifications',
+              'Reminder Notifications',
+              channelDescription: 'Test notifications',
+              importance: Importance.max,
+              priority: Priority.high,
+            ),
+          ),
+        );
+      },);
 
     initialized = true;
   }
@@ -147,14 +164,13 @@ class LocalNotificationService {
     //     ),
     //   ),
     // );
-      final scheduledTime = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 7));
+      final scheduledTime = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3));
       print("Scheduled Time: $scheduledTime");
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      2,
+      5,
       'Scheduled Notification',
       'This notification was scheduled to appear after 3 seconds',
-      matchDateTimeComponents: DateTimeComponents.time,
       androidScheduleMode: scheduleMode,
       scheduledTime,
       const NotificationDetails(
