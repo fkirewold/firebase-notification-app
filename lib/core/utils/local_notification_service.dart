@@ -26,7 +26,6 @@ class LocalNotificationService {
       android: initializationSettingsAndroid,
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
     final androidImplementation =
         flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
@@ -38,8 +37,34 @@ class LocalNotificationService {
         importance: Importance.max,
       ),
     );
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
     initialized = true;
   }
+ static Future<AndroidScheduleMode> getScheduleMode() async {
+  // Check exact alarm permission status
+  PermissionStatus status = await Permission.scheduleExactAlarm.status;
+  print("Exact Alarm Permission Status: $status");
+
+  if (status.isDenied || status.isPermanentlyDenied) {
+    // Request the permission (opens system settings for user approval)
+    status = await Permission.scheduleExactAlarm.request();
+    print("Exact Alarm Permission after request: $status");
+  }
+
+  if (status.isGranted) {
+    print("Exact alarms permitted. Using exact scheduling.");
+    return AndroidScheduleMode.exactAllowWhileIdle;
+  } else {
+    print("Exact alarms not permitted. Falling back to inexact scheduling.");
+    if (status.isPermanentlyDenied) {
+      // Optionally open app settings for manual enable
+      await openAppSettings();
+    }
+    return AndroidScheduleMode.inexact;  // Fallback for less precise timing
+  }
+}
+
 
   Future<void> showNotification(RemoteMessage message) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -74,6 +99,7 @@ class LocalNotificationService {
     return await FlutterLocalNotificationsPlugin()
         .pendingNotificationRequests();
   }
+  
 
   static Future<void> scheduleNotification(
       int id, String title, String body, DateTime scheduledDate) async {
@@ -93,7 +119,6 @@ class LocalNotificationService {
           priority: Priority.high,
         ),
       ),
-      matchDateTimeComponents: DateTimeComponents.time, // For daily at time
     );
   }
 
@@ -107,28 +132,30 @@ class LocalNotificationService {
     if (permissionGranted == false) {
       return;
     }
-    await LocalNotificationService.flutterLocalNotificationsPlugin.show(
-      1,
-      'Test Notification',
-      'This should appear immediately',
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'reminder_notifications',
-          'Reminder Notifications',
-          channelDescription: 'Test notifications',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-      ),
-    );
-      final scheduledTime = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 2));
+  AndroidScheduleMode scheduleMode = await getScheduleMode();
+    // await flutterLocalNotificationsPlugin.show(
+    //   1,
+    //   'Testt Notification',
+    //   'This should appear immediately',
+    //   const NotificationDetails(
+    //     android: AndroidNotificationDetails(
+    //       'reminder_notifications',
+    //       'Reminder Notifications',
+    //       channelDescription: 'Test notifications',
+    //       importance: Importance.max,
+    //       priority: Priority.high,
+    //     ),
+    //   ),
+    // );
+      final scheduledTime = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 7));
+      print("Scheduled Time: $scheduledTime");
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
+      2,
+      'Scheduled Notification',
+      'This notification was scheduled to appear after 3 seconds',
       matchDateTimeComponents: DateTimeComponents.time,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: scheduleMode,
       scheduledTime,
       const NotificationDetails(
         android: AndroidNotificationDetails(
@@ -145,6 +172,7 @@ class LocalNotificationService {
   static Future<bool> requestNotificationPermission() async {
     // Check notification permission status
     PermissionStatus status = await Permission.notification.status;
+    print("Initial Permission Status: $status");
 
     if (status.isDenied) {
       // Request permission
