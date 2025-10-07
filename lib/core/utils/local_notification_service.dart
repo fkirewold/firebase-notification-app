@@ -107,40 +107,41 @@ class LocalNotificationService {
     if (permissionGranted == false) {
       return;
     }
-    // await LocalNotificationService.flutterLocalNotificationsPlugin.show(
-    //   1,
-    //   'Test Notification',
-    //   'This should appear immediately',
-    //   const NotificationDetails(
-    //     android: AndroidNotificationDetails(
-    //       'reminder_notifications',
-    //       'Reminder Notifications',
-    //       channelDescription: 'Test notifications',
-    //       importance: Importance.max,
-    //       priority: Priority.high,
-    //     ),
-    //   ),
-    // );
+    await LocalNotificationService.flutterLocalNotificationsPlugin.show(
+      1,
+      'Test Notification',
+      'This should appear immediately',
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'reminder_notifications',
+          'Reminder Notifications',
+          channelDescription: 'Test notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+    );
+      final scheduledTime = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 2));
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
       body,
+      matchDateTimeComponents: DateTimeComponents.time,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+      scheduledTime,
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'reminder_notifications', // Must match channel ID
           'Reminder Notifications',
           channelDescription:
-              'Notifications that are scheduled to appear later',
+              'Test notifications that appear after a short delay',
           importance: Importance.max,
           priority: Priority.high,
         ),
       ),
     );
   }
-
   static Future<bool> requestNotificationPermission() async {
     // Check notification permission status
     PermissionStatus status = await Permission.notification.status;
