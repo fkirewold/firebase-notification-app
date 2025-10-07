@@ -150,20 +150,20 @@ class LocalNotificationService {
       return;
     }
   AndroidScheduleMode scheduleMode = await getScheduleMode();
-    // await flutterLocalNotificationsPlugin.show(
-    //   1,
-    //   'Testt Notification',
-    //   'This should appear immediately',
-    //   const NotificationDetails(
-    //     android: AndroidNotificationDetails(
-    //       'reminder_notifications',
-    //       'Reminder Notifications',
-    //       channelDescription: 'Test notifications',
-    //       importance: Importance.max,
-    //       priority: Priority.high,
-    //     ),
-    //   ),
-    // );
+    await flutterLocalNotificationsPlugin.show(
+      1,
+      'Testt Notification',
+      'This should appear immediately',
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'reminder_notifications',
+          'Reminder Notifications',
+          channelDescription: 'Test notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+    );
       final scheduledTime = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 3));
       print("Scheduled Time: $scheduledTime");
 
