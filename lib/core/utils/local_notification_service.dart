@@ -82,6 +82,27 @@ class LocalNotificationService {
   }
 }
 
+
+  Future<void> showNotification(RemoteMessage message) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'call_notifications',
+      'Call Notifications',
+      channelDescription: 'General push notifications from the top',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      message.notification?.title ?? 'No Title',
+      message.notification?.body ?? 'No Body',
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
+  }
+
   static Future<void> cancelAllNotifications() async {
     await FlutterLocalNotificationsPlugin().cancelAll();
   }
