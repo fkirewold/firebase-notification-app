@@ -23,7 +23,6 @@ dev_dependencies:
 dependency_overrides:
   meta: ^1.16.0
   flutter_lints: ^5.0.0
-# The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
 
