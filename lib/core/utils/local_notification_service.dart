@@ -116,29 +116,6 @@ class LocalNotificationService {
     return await FlutterLocalNotificationsPlugin()
         .pendingNotificationRequests();
   }
-  
-
-  static Future<void> scheduleNotification(
-      int id, String title, String body, DateTime scheduledDate) async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      tz.TZDateTime.from(scheduledDate, tz.local),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'reminder_notifications',
-          'Reminder Notifications',
-          channelDescription:
-              'Notifications that are scheduled to appear later',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-      ),
-    );
-  }
-
   static Future<void> scheduledNotificationAfter3seconds(
       int id, String title, String body) async {
     // Ask for notification permission (Android 13+)
