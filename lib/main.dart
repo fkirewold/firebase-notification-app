@@ -14,12 +14,7 @@ void main() async
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
- // FirebaseMessaging.onBackgroundMessage(FirebaseMsg.firebaseMessagingBackgroundHandler);
-  // 1. Initialize the timezone database
   tz.initializeTimeZones();
-   // 2. Get the device's local timezone
-  // 3. Set the local timezone for timezone package
   final TimezoneInfo currentTimeZone = await FlutterTimezone.getLocalTimezone();
    tz.setLocalLocation(tz.getLocation(currentTimeZone.identifier));
    print("Local Timezone: ${currentTimeZone.identifier}");
